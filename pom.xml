@@ -11,108 +11,82 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <jersey2.version>2.22</jersey2.version>
-    <jetty.version>9.2.15.v20160210</jetty.version>
-  </properties>
+    <!-- java -->
+    <java.version>1.7</java.version>
+    <!-- maven -->
+    <project-encoding>UTF-8</project-encoding>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 
+    <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
+    <start-class>com.example.springboot.Application</start-class>
+  </properties>
+  <dependencies>
+    <!-- spring boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jersey</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>${spring-boot.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.7.1</version>
+    </dependency>
+  </dependencies>
   <build>
-    <finalName>TestApi</finalName>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
-        <inherited>true</inherited>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <encoding>${project-encoding}</encoding>
         </configuration>
       </plugin>
 
-      <!--
-                              <plugin>
-                                      <groupId>org.mortbay.jetty</groupId>
-                                      <artifactId>maven-jetty-plugin</artifactId>
-                                      <version>6.1.26</version>
-                                      <executions>
-                                              <execution>
-                                                      <id>start-jetty</id>
-                                                      <phase>pre-integration-test</phase>
-                                                      <goals>
-                                                              <goal>run</goal>
-                                                      </goals>
-                                              </execution>
-                                              <execution>
-                                                      <id>stop-jetty</id>
-                                                      <phase>post-integration-test</phase>
-                                                      <goals>
-                                                              <goal>stop</goal>
-                                                      </goals>
-                                              </execution>
-                                      </executions>
-                              </plugin>
-      -->
-
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>6.1.5</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <configuration>
+          <jvmArguments>
+            <!---Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
+            -Xms2048m -Xmx2048m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=256M -XX:MaxPermSize=256m
+          </jvmArguments>
+          <mainClass>${start-class}</mainClass>
+          <layout>ZIP</layout>
+        </configuration>
         <executions>
           <execution>
-            <id>start-jetty</id>
-            <phase>pre-integration-test</phase>
             <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>stop-jetty</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
+              <goal>repackage</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.glassfish.jersey</groupId>
-        <artifactId>jersey-bom</artifactId>
-        <version>${jersey.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>3.3.1.GA</version>
-      </dependency>
-    </dependencies>
-
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-servlet-core</artifactId>
-    </dependency>
-  </dependencies>
 
 
 
